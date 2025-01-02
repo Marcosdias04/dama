@@ -20,9 +20,9 @@ function createBoard() {
         cell.appendChild(piece);
       }
 
-      let selectedPiece = null;
+     let selectedPiece = null;
 
-// Adicionar evento de clique às peças
+// Adicionar evento de clique para as peças
 document.querySelectorAll('.piece').forEach(piece => {
   piece.addEventListener('click', function () {
     if (selectedPiece) {
@@ -33,18 +33,28 @@ document.querySelectorAll('.piece').forEach(piece => {
   });
 });
 
-// Adicionar evento de clique às células
+// Adicionar evento de clique para as células
 document.querySelectorAll('.cell.black').forEach(cell => {
   cell.addEventListener('click', function () {
-    if (selectedPiece && !this.querySelector('.piece')) {
+    if (selectedPiece && !this.querySelector('.piece') && isValidMove(selectedPiece, this)) {
       this.appendChild(selectedPiece);
       selectedPiece.style.border = '';
       selectedPiece = null;
     }
   });
 });
-    }
-  }
-}
 
-createBoard();
+// Função para verificar se o movimento é válido
+function isValidMove(piece, targetCell) {
+  const pieceRow = piece.parentElement.parentElement.rowIndex; // Linha onde a peça está
+  const pieceCol = piece.parentElement.cellIndex; // Coluna onde a peça está
+  const targetRow = targetCell.parentElement.rowIndex; // Linha da célula de destino
+  const targetCol = targetCell.cellIndex; // Coluna da célula de destino
+
+  // Verifica se o movimento é diagonal (diferença de linha e coluna deve ser igual a 1)
+  if (Math.abs(pieceRow - targetRow) === 1 && Math.abs(pieceCol - targetCol) === 1) {
+    return true; // Movimento válido
+  }
+
+  return false; // Movimento inválido
+}
