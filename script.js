@@ -19,6 +19,30 @@ function createBoard() {
         piece.classList.add('piece', 'black');
         cell.appendChild(piece);
       }
+
+      let selectedPiece = null;
+
+// Adicionar evento de clique às peças
+document.querySelectorAll('.piece').forEach(piece => {
+  piece.addEventListener('click', function () {
+    if (selectedPiece) {
+      selectedPiece.style.border = '';
+    }
+    selectedPiece = this;
+    selectedPiece.style.border = '2px solid yellow';
+  });
+});
+
+// Adicionar evento de clique às células
+document.querySelectorAll('.cell.black').forEach(cell => {
+  cell.addEventListener('click', function () {
+    if (selectedPiece && !this.querySelector('.piece')) {
+      this.appendChild(selectedPiece);
+      selectedPiece.style.border = '';
+      selectedPiece = null;
+    }
+  });
+});
     }
   }
 }
